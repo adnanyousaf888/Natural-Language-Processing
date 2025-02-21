@@ -1,0 +1,129 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{geometry}
+\usepackage{float}
+\geometry{a4paper, margin=1in}
+
+\lstset{
+    basicstyle=\ttfamily\footnotesize,
+    breaklines=true,
+    frame=single,
+    language=Python,
+    keywordstyle=\color{blue},
+    stringstyle=\color{red},
+    commentstyle=\color{green!60!black}
+}
+
+\begin{document}
+
+\title{Urdu Speech-to-Text System: Exploring SentencePiece and Conformer Models}
+\author{Adnan Yousaf}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+Developing Speech-to-Text (STT) systems for languages like Urdu comes with its fair share of challenges. The lack of large annotated datasets and advanced resources can make it difficult to produce high-performing models. This project focused on addressing these challenges by creating an Urdu STT system using modern tools and architectures like SentencePiece, Conformer models, and OpenAI's Whisper. The report dives into every step—from preparing the data to training the models—while highlighting the outcomes, challenges, and future possibilities. 
+\end{abstract}
+
+\tableofcontents
+
+\chapter{Introduction}
+\section{Why This Project?}
+Speech-to-Text systems are used in so many technologies that we rely on every day—think about virtual assistants like Siri, automatic captioning tools, and transcription services. But most of these systems are built for dominant languages like English, leaving languages like Urdu without the same level of accessibility. 
+
+Urdu is spoken by millions worldwide, yet it faces specific hurdles:
+\begin{itemize}
+    \item Its script is complex and changes depending on the context of the characters.
+    \item Open-source speech and text datasets in Urdu are limited.
+    \item There’s a lot of variation in pronunciation due to regional accents.
+\end{itemize}
+
+The goal of this project was to bridge this gap by developing an STT system tailored specifically for Urdu.
+
+\section{What Did We Aim to Achieve?}
+We set out to:
+\begin{enumerate}
+    \item Create a tokenizer for Urdu text using SentencePiece, ensuring efficient token representation.
+    \item Build a pipeline to align and preprocess audio and text data.
+    \item Implement a Conformer model, which is great for processing time-sequential data like speech.
+    \item Fine-tune OpenAI’s Whisper model with Urdu-specific data, leveraging its robust multilingual capabilities.
+    \item Compare the performance of the Conformer and Whisper models to evaluate which one is better suited for Urdu.
+\end{enumerate}
+
+\chapter{Background Research}
+\section{How Do Speech-to-Text Systems Work?}
+At their core, STT systems work by converting audio signals into written text. Early systems relied on statistical methods like Hidden Markov Models (HMM) combined with Gaussian Mixture Models (GMM). However, with the rise of deep learning, more powerful models like Recurrent Neural Networks (RNNs), Transformers, and Conformers have taken over. 
+
+\section{What’s the Role of Tokenization?}
+Tokenization is like breaking down a large puzzle into manageable pieces. For text processing, this means splitting text into smaller units like words, subwords, or even characters. For this project, we used SentencePiece, which is particularly effective for languages like Urdu, where words can be long and morphologically complex.
+
+\section{Why Choose Conformers and Whisper?}
+The Conformer model combines the strengths of convolutional networks and attention mechanisms, making it particularly good at understanding the patterns in speech data. Whisper, on the other hand, is a pre-trained model that already has knowledge of multiple languages, which can save time and resources when working on smaller datasets.
+
+\chapter{The Process}
+\section{Preparing the Data}
+\subsection{Collecting Urdu Speech and Text Data}
+The dataset used for this project included audio files paired with their transcriptions. It was important to ensure that the dataset covered different speaking speeds, accents, and environments to make the system as versatile as possible.
+
+\subsection{Cleaning the Audio Files}
+The raw audio files went through several processing steps:
+\begin{itemize}
+    \item Resampling all files to 16 kHz for consistency.
+    \item Reducing background noise to improve clarity.
+    \item Normalizing the audio levels.
+    \item Extracting features like Mel spectrograms, which represent the frequency content of the audio over time.
+\end{itemize}
+
+\subsection{Cleaning the Text Data}
+The text transcriptions were cleaned up by:
+\begin{itemize}
+    \item Removing non-Urdu characters and special symbols.
+    \item Standardizing spaces and punctuation.
+    \item Tokenizing the text with a custom SentencePiece tokenizer.
+\end{itemize}
+
+\section{Training the Models}
+\subsection{Conformer Model}
+The Conformer model was trained from scratch using a dataset of Urdu audio. We used the Connectionist Temporal Classification (CTC) loss function, which is well-suited for speech data.
+
+\subsection{Whisper Model Fine-Tuning}
+Since the Whisper model already understands speech in multiple languages, we fine-tuned it with Urdu-specific data. This step allowed the model to adapt to the unique sounds and structures of Urdu.
+
+\chapter{Results and Observations}
+\section{How Well Did the Models Perform?}
+We evaluated the models using two common metrics:
+\begin{itemize}
+    \item Word Error Rate (WER): How many words were incorrectly transcribed.
+    \item Character Error Rate (CER): How many characters were wrong in the output.
+\end{itemize}
+
+
+\section{What Do the Results Tell Us?}
+The Whisper model performed slightly better, especially with longer and more complex sentences. This shows the power of pre-training on diverse datasets. The Conformer model was not far behind and excelled with shorter sentences, but it struggled with longer, continuous speech.
+
+\chapter{Conclusion}
+This project demonstrated how modern tools like SentencePiece, Conformers, and Whisper can be used to create an STT system for Urdu. While Whisper showed superior performance, both approaches highlighted the potential of combining cutting-edge models with tailored data preparation.
+
+\section{What’s Next?}
+There’s always room for improvement. Future work could include:
+\begin{itemize}
+    \item Expanding the dataset to include more accents, noisy environments, and conversational speech.
+    \item Exploring hybrid models that combine the strengths of both Conformer and Whisper.
+    \item Adding a post-processing language model to clean up the transcription output.
+\end{itemize}
+
+\appendix
+\chapter{Appendix}
+\section{Hardware and Tools Used}
+\begin{itemize}
+    \item GPU: Colab's T4 GPU
+    \item Frameworks: PyTorch, Torchaudio, and SentencePiece
+    \item Code Editor: Google Colab
+\end{itemize}
+
+\end{document}
